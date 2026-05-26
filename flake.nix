@@ -23,18 +23,18 @@
           pkgs = nixpkgs.legacyPackages.${system};
         in
         {
-          default = pkgs.rustPlatform.buildRustPackage {
+          default = pkgs.rustPlatform.buildRustPackage rec {
             pname = "ropds";
-            version = "master";
+            version = "v0.11.4";
 
             src = pkgs.fetchFromGitHub {
               owner = "dshein-alt";
               repo = "ropds";
-              rev = "master";
-              hash = "sha256-CV3LGc6WtyQReKhtmWV3OskcPMNjWAhGbxGU/0jMnN0=";
+              rev = version;
+              hash = "sha256-Kb6BGbABpo+pW4hFtlPjl/crGKDiHvng/g/iBvHWwbc=";
             };
 
-            cargoHash = "sha256-tdn4z0CIhrCfrfc8euAC9kh3dHIVGcHKVYcbarX7pZQ=";
+            cargoHash = "sha256-UGThSlf+XW7ygGHSScmvXbYkQa55TY5B0FZQUJDpMpM=";
 
             meta = {
               description = "ropds - OPDS server";
