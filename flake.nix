@@ -25,16 +25,16 @@
         {
           default = pkgs.rustPlatform.buildRustPackage rec {
             pname = "ropds";
-            version = "v0.11.4";
+            version = "v0.13.2";
 
             src = pkgs.fetchFromGitHub {
               owner = "dshein-alt";
               repo = "ropds";
               rev = version;
-              hash = "sha256-Kb6BGbABpo+pW4hFtlPjl/crGKDiHvng/g/iBvHWwbc=";
+              hash = "sha256-T+wc2Gduns1vVrLqIY6gd2nKphC6ZQ6ePGZD3QqMmCo=";
             };
 
-            cargoHash = "sha256-UGThSlf+XW7ygGHSScmvXbYkQa55TY5B0FZQUJDpMpM=";
+            cargoHash = "sha256-fi9zpUEzRIGVNpvG605S55QA9cz56UuXNM7znZgRNxg=";
 
             meta = {
               description = "ropds - OPDS server";
