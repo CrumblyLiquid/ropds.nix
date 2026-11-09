@@ -25,12 +25,12 @@
         {
           default = pkgs.rustPlatform.buildRustPackage rec {
             pname = "ropds";
-            version = "v0.13.2";
+            version = "0.13.2";
 
             src = pkgs.fetchFromGitHub {
               owner = "dshein-alt";
               repo = "ropds";
-              rev = version;
+              tag = "v${version}";
               hash = "sha256-T+wc2Gduns1vVrLqIY6gd2nKphC6ZQ6ePGZD3QqMmCo=";
             };
 
