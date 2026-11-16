@@ -13,7 +13,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: cachix/install-nix-action@v31
 
@@ -22,7 +22,11 @@ jobs:
         run: echo "version=$(nix eval --raw .#default.version)" >> "$GITHUB_OUTPUT"
 
       - name: Run nix-update
-        run: nix run nixpkgs#nix-update -- --flake default
+        # https://github.com/Mic92/nix-update/issues/687
+        run: |
+          nix shell --impure --expr \
+            'with import (builtins.getFlake "nixpkgs") { }; nix-update.override { nix = nixVersions.nix_2_34; }' \
+            --command nix-update --flake default
 
       - name: Check for changes
         id: check

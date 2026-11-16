@@ -6,7 +6,10 @@
   };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+    }:
     let
       supportedSystems = [
         "x86_64-linux"
@@ -33,6 +36,15 @@
               tag = "v${version}";
               hash = "sha256-T+wc2Gduns1vVrLqIY6gd2nKphC6ZQ6ePGZD3QqMmCo=";
             };
+
+            nativeBuildInputs = [
+              pkgs.pkg-config
+            ];
+
+            buildInputs = [
+              pkgs.zstd
+              pkgs.sqlite
+            ];
 
             cargoHash = "sha256-fi9zpUEzRIGVNpvG605S55QA9cz56UuXNM7znZgRNxg=";
 
