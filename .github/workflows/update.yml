@@ -17,6 +17,11 @@ jobs:
 
       - uses: cachix/install-nix-action@v31
 
+      - uses: cachix/cachix-action@v16
+        with:
+          name: crumblyliquid
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: Record current version
         id: old
         run: echo "version=$(nix eval --raw .#default.version)" >> "$GITHUB_OUTPUT"

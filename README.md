@@ -26,6 +26,26 @@ Add `ropds` as an input to your system flake:
 }
 ```
 
+## Binary cache
+
+CI builds are pushed to a [Cachix](https://cachix.org) cache.
+To use it, add this to your NixOS configuration:
+
+```nix
+{
+  nix.settings = {
+    extra-substituters = [ "https://crumblyliquid.cachix.org" ];
+    extra-trusted-public-keys = [
+      "crumblyliquid.cachix.org-1:pYHod577Itv38u+CcfnJipur0L8yBtD76oVagRgND5A="
+    ];
+  };
+}
+```
+
+The flake also advertises the cache through `nixConfig`,
+which Nix offers to use when you build it directly
+(or pass `--accept-flake-config`).
+
 ## Usage
 
 A minimal configuration in your `configuration.nix`:

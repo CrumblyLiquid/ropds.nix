@@ -1,14 +1,26 @@
 {
   description = "Ropds package definition and its corresponding NixOS module";
 
+  nixConfig = {
+    extra-substituters = [ "https://crumblyliquid.cachix.org" ];
+    extra-trusted-public-keys = [
+      "crumblyliquid.cachix.org-1:pYHod577Itv38u+CcfnJipur0L8yBtD76oVagRgND5A="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    crate2nix = {
+      url = "github:nix-community/crate2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      crate2nix,
     }:
     let
       supportedSystems = [
@@ -24,29 +36,30 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+
+          version = "0.13.2";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "dshein-alt";
+            repo = "ropds";
+            tag = "v${version}";
+            hash = "sha256-T+wc2Gduns1vVrLqIY6gd2nKphC6ZQ6ePGZD3QqMmCo=";
+          };
+
+          cargoNix = crate2nix.tools.${system}.appliedCargoNix {
+            name = "ropds";
+            inherit src;
+          };
         in
         {
-          default = pkgs.rustPlatform.buildRustPackage rec {
+          default = pkgs.symlinkJoin {
             pname = "ropds";
-            version = "0.13.2";
+            inherit version;
+            paths = [ cargoNix.rootCrate.build ];
 
-            src = pkgs.fetchFromGitHub {
-              owner = "dshein-alt";
-              repo = "ropds";
-              tag = "v${version}";
-              hash = "sha256-T+wc2Gduns1vVrLqIY6gd2nKphC6ZQ6ePGZD3QqMmCo=";
+            passthru = {
+              inherit src;
             };
-
-            nativeBuildInputs = [
-              pkgs.pkg-config
-            ];
-
-            buildInputs = [
-              pkgs.zstd
-              pkgs.sqlite
-            ];
-
-            cargoHash = "sha256-fi9zpUEzRIGVNpvG605S55QA9cz56UuXNM7znZgRNxg=";
 
             meta = {
               description = "ropds - OPDS server";
